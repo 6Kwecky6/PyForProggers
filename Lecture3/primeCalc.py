@@ -33,23 +33,49 @@ def exponential(num, exp):
 def find_all_prime(limit):
 
     #Exceptions for 2,3 and 5 come here
-    print('Prime found: 2\nPrime found: 3\nPrime found: 5') #If this is unacceptable, I will remove the 'quick check' in prime_check()
+    primes = [2, 3, 5]
     for x in range(6,limit):
         if prime_check(x):
-            print('Prime found: %s'%x)
+            primes.append(x)
+    return primes
+
+def k6(n):
+    if n<=3: return n>1
+    if (n>>1)<<1==n or n%3==0: return False
+
+    i=5
+    while i*i <=n:
+        if n%i==0 or n%(i+2)==0:return False
+        i+=6
+    return True
+
+
 
 def main():
     epoch = 0
     start = datetime.datetime.now()
     while True:
-        find_all_prime(1000)
+        old_primes= find_all_prime(1000)
         epoch+=1
         end = datetime.datetime.now()
         if (start - end).seconds >= 1:
+             break
+
+    print("The old function uses %s milliseconds per iteration"%((end-start).total_seconds()*1000))
+    epoch = 0
+    start = datetime.datetime.now()
+    while True:
+        primes=[]
+        for i in range(1000):
+            if k6(i): primes.append(i)
+        epoch += 1
+        end = datetime.datetime.now()
+        if (start - end).seconds >= 1:
             break
-
-    print("The function uses %s milliseconds per iteration"%((end-start).total_seconds()*1000))
-
+    print("The k6 function uses %s milliseconds per iteration" % ((end - start).total_seconds() * 1000))
+    diff = [item for item in old_primes if item not in primes]
+    print(diff)
+    # Conclusion: no only was the old algorithm much slower, but it was also wrong
 
 if __name__ == '__main__':
     main()
