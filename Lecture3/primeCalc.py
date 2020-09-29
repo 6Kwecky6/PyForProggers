@@ -50,6 +50,15 @@ def k6(n):
     return True
 
 
+def PrimeGen(n=10000):
+    primes = []
+    chk = 2
+    while len(primes) < n:
+        ptest = [chk for i in range(2,chk) if chk%i == 0]
+        primes += [] if ptest else [chk]
+        chk += 1
+    return primes
+
 
 def main():
     epoch = 0
@@ -77,5 +86,16 @@ def main():
     print(diff)
     # Conclusion: no only was the old algorithm much slower, but it was also wrong
 
+    epoch = 0
+    start = datetime.datetime.now()
+    while True:
+        teach_primes = PrimeGen(primes.__len__())
+        epoch += 1
+        end = datetime.datetime.now()
+        if (start - end).seconds >= 1:
+            break
+    print("The teachers function uses %s milliseconds per iteration" % ((end - start).total_seconds() * 1000))
+    teach_diff = [item for item in teach_primes if item not in primes]
+    print(teach_diff)
 if __name__ == '__main__':
     main()
